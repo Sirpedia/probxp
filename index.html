@@ -4,11 +4,12 @@
     <script src="https://kihtrak.com/cloud_variable/cloudify.min.js"></script>
 </head>
 <body>
+    <div style="background-color: #EEEEFF; padding: 2vw; border-radius: 3vw; font-family: arial;">
     <h1 id="newmessage"></h1>
 
     <input id="chatbox" placeholder="Type your message here...">
     <button onclick="sendMessage()">Send</button>
-
+</div>
     <script>
         var cloud_message;
 
@@ -20,7 +21,7 @@
 
         // Correctly define the updateChat function
         function updateChat() {
-            document.getElementById("newmessage").innerHTML = cloud_message || ""; // Display cloud_message or empty text
+            document.getElementById("newmessage").innerHTML = "???: " + cloud_message || ""; // Display cloud_message or empty text
         }
 
         // Periodically update the chat
