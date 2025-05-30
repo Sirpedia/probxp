@@ -39,31 +39,34 @@
 </head>
 <body>
     <div class="chat-container">
-        <h2>Chat</h2>
+        <h2>Live Chat</h2>
         <div id="messages"></div>
         <input id="chatbox" placeholder="Type your message here...">
         <button onclick="sendMessage()">Send</button>
     </div>
 
     <script>
-        var messages = [];
+        var cloud_message = new CloudVar("global_chat_message");
+        var messages = new CloudVar("global_chat_history", []);
 
         function sendMessage() {
             var message = document.getElementById("chatbox").value;
             if (message.trim() !== "") {
-                messages.push(message);
-                if (messages.length > 5) {
-                    messages.shift(); // Keep only the last 5 messages
+                messages.value.push(message);
+                if (messages.value.length > 5) {
+                    messages.value.shift(); // Keep only the last 5 messages
                 }
-                updateChat();
+                cloud_message.value = message;
                 document.getElementById("chatbox").value = ""; // Clear input after sending
             }
         }
 
         function updateChat() {
             var messagesContainer = document.getElementById("messages");
-            messagesContainer.innerHTML = messages.map(msg => `<div class="message">${msg}</div>`).join('');
+            messagesContainer.innerHTML = messages.value.map(msg => `<div class="message">${msg}</div>`).join('');
         }
+
+        messages.onUpdate(updateChat);
     </script>
 </body>
 </html>
