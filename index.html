@@ -2,71 +2,30 @@
 <html>
 <head>
     <script src="https://kihtrak.com/cloud_variable/cloudify.min.js"></script>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #F5F5F5;
-        }
-        .chat-container {
-            width: 40%;
-            min-width: 300px;
-            background-color: #EEEEFF;
-            padding: 2vw;
-            border-radius: 1vw;
-            text-align: center;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        #chatbox {
-            width: 80%;
-            padding: 0.5vw;
-            margin: 1vw 0;
-            border-radius: 0.5vw;
-            border: 1px solid #CCC;
-        }
-        .message {
-            margin: 0.5vw 0;
-            padding: 0.5vw;
-            background-color: white;
-            border-radius: 0.5vw;
-            text-align: left;
-        }
-    </style>
 </head>
 <body>
-    <div class="chat-container">
-        <h2>Live Chat</h2>
-        <div id="messages"></div>
-        <input id="chatbox" placeholder="Type your message here...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+    <div style="background-color: #EEEEFF; padding: 2vw; border-radius: 3vw; font-family: arial;">
+    <h1 id="newmessage"></h1>
 
+    <input id="chatbox" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+</div>
     <script>
-        var cloud_message = new CloudVar("global_chat_message");
-        var messages = new CloudVar("global_chat_history", []);
+        var cloud_message;
 
+        // Correctly define the sendMessage function
         function sendMessage() {
-            var message = document.getElementById("chatbox").value;
-            if (message.trim() !== "") {
-                messages.value.push(message);
-                if (messages.value.length > 5) {
-                    messages.value.shift(); // Keep only the last 5 messages
-                }
-                cloud_message.value = message;
-                document.getElementById("chatbox").value = ""; // Clear input after sending
-            }
+            cloud_message = document.getElementById("chatbox").value;
+            
         }
 
+        // Correctly define the updateChat function
         function updateChat() {
-            var messagesContainer = document.getElementById("messages");
-            messagesContainer.innerHTML = messages.value.map(msg => `<div class="message">${msg}</div>`).join('');
+            document.getElementById("newmessage").innerHTML = "???: " + cloud_message || ""; // Display cloud_message or empty text
         }
 
-        messages.onUpdate(updateChat);
+        // Periodically update the chat
+        setInterval(updateChat, 1000);
     </script>
 </body>
 </html>
